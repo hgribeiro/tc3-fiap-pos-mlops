@@ -159,6 +159,11 @@ Navegue até a pasta `notebooks/` e execute os notebooks na ordem numérica.
 
 Projeto desenvolvido para o **Tech Challenge 3** - FIAP Pós-Graduação em Machine Learning Engineering.
 
+**Integrantes:**
+- Carol Devens
+- Matheus Silvestre
+- Valterlan
+
 ---
 
 ## 📄 Licença
