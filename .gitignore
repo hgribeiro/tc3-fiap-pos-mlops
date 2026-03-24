@@ -2,6 +2,9 @@
 data/flights.csv
 data/processed/
 
+# Model files grandes
+models/*.pkl
+
 # Python
 __pycache__/
 *.pyc
