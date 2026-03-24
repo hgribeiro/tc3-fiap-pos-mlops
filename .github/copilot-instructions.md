@@ -1,141 +1,92 @@
-# Copilot Instructions - Flight Delay Prediction Project
+# Copilot Instructions - Flight Delay Prediction (TC3)
 
-## Project Overview
+## Scope
 
-This is a **Tech Challenge 3** project for FIAP MLOps post-graduate course. The goal is to analyze and predict flight delays in the USA using supervised and unsupervised machine learning techniques.
+Projeto do Tech Challenge 3 (FIAP MLOps) para análise e predição de atrasos de voos nos EUA.
+Priorize mudanças mínimas, reprodutíveis e alinhadas com os scripts existentes em `src/`.
 
-**Important**: This project represents 90% of the final grade and must be developed as a team.
+## Quick Start (Ordem Obrigatória)
 
-## Setup & Dependencies
-
-### Installation
 ```bash
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+
+# 1) EDA + amostragem + artefatos iniciais
+python src/01_eda.py
+
+# 2) Feature engineering + split + encoders/scaler
+python src/02_feature_engineering.py
+
+# 3) Modelos supervisionados + métricas JSON
+python src/03_supervised_classification.py
+
+# 4) Não supervisionado (PCA/K-Means)
+python src/04_unsupervised.py
+
+# 5) Relatório consolidado
+python src/05_model_report.py
+
+# 6) Dados finais do dashboard
+python src/prepare_dashboard_data.py
+
+# 7) Dashboard estático
+npx -y serve . -l 3847
 ```
 
-### Running Jupyter Notebooks
+Dashboard: `http://localhost:3847/dashboard/`
+
+Opcional (captura de telas):
+
 ```bash
-jupyter notebook
-```
-Execute notebooks in numerical order from the `notebooks/` directory.
-
-## Data Architecture
-
-### Datasets Location
-- `data/airlines.csv` - Airline information (~359 bytes)
-- `data/airports.csv` - Airport details (~24KB)
-- `data/flights.csv` - **Main dataset** (~592MB) ⚠️
-
-### Performance Considerations for Large Files
-
-When working with `flights.csv`:
-
-```python
-# Optimize dtypes to reduce memory
-dtypes = {
-    'col1': 'int32',      # instead of int64
-    'col2': 'category',   # for categorical columns
-}
-df = pd.read_csv('data/flights.csv', dtype=dtypes)
-
-# Read in chunks for processing
-chunk_size = 100000
-for chunk in pd.read_csv('data/flights.csv', chunksize=chunk_size):
-    # Process each chunk
-    pass
-
-# Or use sampling for initial exploration
-df_sample = pd.read_csv('data/flights.csv', 
-                        skiprows=lambda i: i>0 and np.random.random() > 0.1)
+node scripts/capture_dashboard_screenshots.mjs
 ```
 
-### Directory Structure
-```
-data/
-├── raw/           # Original datasets
-├── processed/     # Cleaned/transformed datasets
-└── external/      # External data (holidays, weather, etc.)
-```
+## Pipeline e Fronteiras de Componentes
 
-## Development Workflow
+- `data/flights.csv` (~592MB) é a base principal.
+- `src/01_eda.py` gera `data/processed/flights_sample_processed.csv`, `data/processed/eda_summary.json` e gráficos em `docs/eda_plots/`.
+- `src/02_feature_engineering.py` gera `X_*.parquet`, `y_*.parquet`, `models/encoders.json`, `models/scaler.pkl`.
+- `src/03_supervised_classification.py` e `src/04_unsupervised.py` geram JSONs em `data/processed/dashboard/`.
+- `src/05_model_report.py` consolida métricas em `docs/model_report.md`.
+- `src/prepare_dashboard_data.py` gera/atualiza JSONs `dashboard_*.json` consumidos por `dashboard/app.js`.
 
-### Phase Sequence
-1. **EDA** (Exploratory Data Analysis) - `01_eda.ipynb`
-2. **Preprocessing** - `02_preprocessing.ipynb`
-3. **Supervised Models** - `03_supervised_models.ipynb`
-4. **Unsupervised Models** - `04_unsupervised_models.ipynb`
+Se pular etapas, os scripts seguintes quebram por dependência de arquivos.
 
-### Code Organization
-- `src/data/` - Data ingestion and transformation scripts
-- `src/features/` - Feature engineering code
-- `src/models/` - Model training and evaluation code
-- `src/visualization/` - Visualization functions
-- `models/` - Saved trained models
-- `docs/` - Additional documentation
+## Convenções do Repositório
 
-## Machine Learning Pipeline
+- Idioma predominante: português (docstrings, mensagens e documentação), com nomes técnicos em inglês.
+- Reprodutibilidade: manter `random_state=42` e seeds existentes, salvo solicitação explícita.
+- Otimização de memória é mandatória para `flights.csv`: `dtype` enxuto, sampling/chunking quando necessário.
+- Evitar data leakage: não usar colunas de atraso real como features preditoras pré-voo.
+- Manter caminhos relativos via `pathlib.Path` e criar diretórios com `mkdir(..., exist_ok=True)` quando preciso.
+- Para dashboard, preferir saída em JSON já arredondada/cast para tipos nativos Python.
 
-### Required Components
+## Regras de Modelagem
 
-**Supervised Learning** (minimum 1):
-- Classification: Predict if flight will be delayed (binary)
-  - Algorithms: Logistic Regression, Random Forest, XGBoost, LightGBM
-  - Metrics: Accuracy, Precision, Recall, F1-Score, AUC-ROC
-- Regression: Predict delay duration in minutes
-  - Algorithms: Linear Regression, Ridge, Random Forest, XGBoost
-  - Metrics: MAE, RMSE, R²
+- Definição alvo de classificação: `IS_DELAYED = ARRIVAL_DELAY > 15` minutos.
+- Split estratificado esperado: 70/15/15 (treino/val/teste).
+- Fit de encoders/scaler no treino; aplicar em val/teste sem refit.
+- Preservar guardrails de leakage já implementados nos scripts.
 
-**Unsupervised Learning** (minimum 1):
-- Clustering: K-Means, DBSCAN for airports/routes/airlines
-- Dimensionality Reduction: PCA, t-SNE for visualization
+## Pitfalls Comuns
 
-**Model Interpretation**:
-- Feature importance analysis
-- SHAP values for explainability
+- Memória: operações no dataset completo podem estourar RAM; começar por amostra.
+- Ordem de execução: outputs ausentes são a causa mais comum de erro.
+- Dashboard depende dos JSONs em `data/processed/dashboard/`; verifique geração antes de depurar front.
+- `serve` na porta `3847` pode conflitar; troque a porta se necessário.
 
-## Key Business Questions
+## Estrutura de Referência (Link, não duplicar)
 
-- Which airports are most critical for delays?
-- What features increase delay probability?
-- Are delays more common on certain days/times?
-- Can airports be grouped by similar operational profiles?
-- How accurately can we predict delays from historical data?
+- Visão geral e execução: `README.md`
+- Objetivos oficiais do desafio: `docs/tc3.md`
+- Relatório consolidado: `docs/model_report.md`
+- Especificações detalhadas por task: `tasks/`
+- Contexto do agente DS: `.agent.md`
 
-## Best Practices
+## O que evitar ao contribuir
 
-### Data Handling
-- Always document data transformations and cleaning decisions
-- Use appropriate dtypes to optimize memory with large datasets
-- Consider chunking or sampling for initial exploration of `flights.csv`
-- Validate foreign key relationships between datasets
-
-### Feature Engineering
-Consider creating:
-- Time-based features (time of day, day of week, month, season)
-- Holiday indicators
-- Route-based features (distance, frequency)
-- Weather-related features (from external data)
-- Airport/airline aggregated statistics
-
-### Documentation
-- Save visualizations to `docs/eda_plots/`
-- Document insights in `docs/eda_report.md`
-- Save cleaned datasets to `data/processed/`
-- Document all assumptions and decisions
-- Include limitations and improvement suggestions
-
-## Tech Stack
-
-- **Python 3.8+**
-- **Data**: pandas, numpy
-- **ML**: scikit-learn, XGBoost, LightGBM
-- **Viz**: matplotlib, seaborn, plotly
-- **Notebooks**: Jupyter
-
-## Deliverables
-
-1. GitHub repository with complete code
-2. Video presentation (5-10 minutes) explaining work, results, and conclusions
-3. Critical analysis of results, limitations, and next steps
+- Não alterar escopo de UX do dashboard além do solicitado.
+- Não introduzir dependências novas sem necessidade clara.
+- Não refatorar scripts inteiros quando a demanda for localizada.
+- Não quebrar contratos de artefato (`data/processed/dashboard/*.json`, `models/*.json|*.pkl`).
