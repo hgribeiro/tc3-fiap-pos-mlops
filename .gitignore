@@ -1,2 +1,22 @@
-flights.csv
-Analise_exploratoria.ipynb
+# Data files grandes
+data/flights.csv
+data/processed/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

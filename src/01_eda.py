@@ -11,8 +11,11 @@ Datasets:
 # %% Imports
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')  # Backend não-interativo (funciona sem display)
 import matplotlib.pyplot as plt
 import seaborn as sns
+import json
 import warnings
 from pathlib import Path
 
@@ -57,7 +60,7 @@ dtypes_flights = {
     'DAY': 'int8',
     'DAY_OF_WEEK': 'int8',
     'AIRLINE': 'category',
-    'FLIGHT_NUMBER': 'int16',
+    'FLIGHT_NUMBER': 'int32',
     'TAIL_NUMBER': 'category',
     'ORIGIN_AIRPORT': 'category',
     'DESTINATION_AIRPORT': 'category',
@@ -86,6 +89,7 @@ dtypes_flights = {
 }
 
 # Carregar amostra de 10% para análise inicial
+np.random.seed(42)  # Seed para reprodutibilidade
 df_flights = pd.read_csv(
     DATA_PATH / 'flights.csv',
     dtype=dtypes_flights,
@@ -293,6 +297,7 @@ axes[1, 1].set_title('Voos Pontuais vs Atrasados')
 
 plt.tight_layout()
 plt.savefig(PLOTS_PATH / '01_distribuicao_atrasos.png', dpi=300, bbox_inches='tight')
+plt.close(fig)
 print("✓ Salvo: 01_distribuicao_atrasos.png")
 
 # 6.2 Análise Temporal
@@ -333,6 +338,7 @@ axes[1, 1].set_xticks(range(1, 13))
 
 plt.tight_layout()
 plt.savefig(PLOTS_PATH / '02_analise_temporal.png', dpi=300, bbox_inches='tight')
+plt.close(fig)
 print("✓ Salvo: 02_analise_temporal.png")
 
 # 6.3 Análise por Companhia Aérea
@@ -358,13 +364,18 @@ axes[1].set_title('Top 10 Companhias com Mais Voos')
 
 plt.tight_layout()
 plt.savefig(PLOTS_PATH / '03_analise_companhias.png', dpi=300, bbox_inches='tight')
+plt.close(fig)
 print("✓ Salvo: 03_analise_companhias.png")
 
 # 6.4 Análise por Aeroporto
 fig, axes = plt.subplots(1, 2, figsize=(15, 6))
 
-# Top 10 aeroportos de origem com mais atrasos
-top_origin_delay = df_flights.groupby('ORIGIN_AIRPORT')['DEPARTURE_DELAY'].mean().sort_values(ascending=False).head(10)
+# Filtrar apenas aeroportos com código IATA (3 letras) — exclui códigos numéricos
+iata_mask_origin = df_flights['ORIGIN_AIRPORT'].astype(str).str.match(r'^[A-Z]{3}$')
+iata_mask_dest = df_flights['DESTINATION_AIRPORT'].astype(str).str.match(r'^[A-Z]{3}$')
+
+# Top 10 aeroportos de origem com mais atrasos (apenas IATA)
+top_origin_delay = df_flights[iata_mask_origin].groupby('ORIGIN_AIRPORT')['DEPARTURE_DELAY'].mean().sort_values(ascending=False).head(10)
 axes[0].barh(range(len(top_origin_delay)), top_origin_delay.values, color='orange', edgecolor='black')
 axes[0].set_yticks(range(len(top_origin_delay)))
 axes[0].set_yticklabels(top_origin_delay.index)
@@ -373,7 +384,7 @@ axes[0].set_title('Top 10 Aeroportos com Maior Atraso na Partida')
 axes[0].invert_yaxis()
 
 # Top 10 aeroportos de destino com mais atrasos
-top_dest_delay = df_flights.groupby('DESTINATION_AIRPORT')['ARRIVAL_DELAY'].mean().sort_values(ascending=False).head(10)
+top_dest_delay = df_flights[iata_mask_dest].groupby('DESTINATION_AIRPORT')['ARRIVAL_DELAY'].mean().sort_values(ascending=False).head(10)
 axes[1].barh(range(len(top_dest_delay)), top_dest_delay.values, color='purple', edgecolor='black')
 axes[1].set_yticks(range(len(top_dest_delay)))
 axes[1].set_yticklabels(top_dest_delay.index)
@@ -383,6 +394,7 @@ axes[1].invert_yaxis()
 
 plt.tight_layout()
 plt.savefig(PLOTS_PATH / '04_analise_aeroportos.png', dpi=300, bbox_inches='tight')
+plt.close(fig)
 print("✓ Salvo: 04_analise_aeroportos.png")
 
 # 6.5 Correlação entre variáveis numéricas
@@ -396,6 +408,7 @@ sns.heatmap(correlation_matrix, annot=True, fmt='.2f', cmap='coolwarm',
 plt.title('Matriz de Correlação - Variáveis Numéricas')
 plt.tight_layout()
 plt.savefig(PLOTS_PATH / '05_correlacao.png', dpi=300, bbox_inches='tight')
+plt.close('all')
 print("✓ Salvo: 05_correlacao.png")
 
 # 6.6 Análise de Distância vs Atraso
@@ -409,6 +422,7 @@ plt.ylim(-50, 200)
 plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.savefig(PLOTS_PATH / '06_distancia_vs_atraso.png', dpi=300, bbox_inches='tight')
+plt.close('all')
 print("✓ Salvo: 06_distancia_vs_atraso.png")
 
 # 6.7 Análise de Cancelamentos e Desvios
@@ -434,6 +448,7 @@ else:
 
 plt.tight_layout()
 plt.savefig(PLOTS_PATH / '07_cancelamentos.png', dpi=300, bbox_inches='tight')
+plt.close(fig)
 print("✓ Salvo: 07_cancelamentos.png")
 
 # %% ============================================================================
@@ -480,19 +495,18 @@ print("=" * 80)
 df_flights.to_csv(PROCESSED_PATH / 'flights_sample_processed.csv', index=False)
 print(f"✓ Salvo: flights_sample_processed.csv ({len(df_flights):,} registros)")
 
-# Salvar estatísticas resumidas
+# Salvar estatísticas resumidas (converter tipos numpy para Python nativo)
 summary_stats = {
-    'total_flights': len(df_flights),
-    'delay_rate': df_flights['IS_DELAYED'].mean(),
-    'avg_delay_when_delayed': df_flights[df_flights['IS_DELAYED']==1]['ARRIVAL_DELAY'].mean(),
-    'cancellation_rate': df_flights['CANCELLED'].mean(),
-    'diversion_rate': df_flights['DIVERTED'].mean(),
-    'worst_month': monthly_delays.idxmax(),
-    'worst_day_of_week': dow_delays.idxmax(),
-    'worst_airline': top_airlines_delay.idxmax(),
+    'total_flights': int(len(df_flights)),
+    'delay_rate': float(df_flights['IS_DELAYED'].mean()),
+    'avg_delay_when_delayed': float(df_flights[df_flights['IS_DELAYED']==1]['ARRIVAL_DELAY'].mean()),
+    'cancellation_rate': float(df_flights['CANCELLED'].mean()),
+    'diversion_rate': float(df_flights['DIVERTED'].mean()),
+    'worst_month': int(monthly_delays.idxmax()),
+    'worst_day_of_week': int(dow_delays.idxmax()),
+    'worst_airline': str(top_airlines_delay.idxmax()),
 }
 
-import json
 with open(PROCESSED_PATH / 'eda_summary.json', 'w') as f:
     json.dump(summary_stats, f, indent=2)
 print("✓ Salvo: eda_summary.json")

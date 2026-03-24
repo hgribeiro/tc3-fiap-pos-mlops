@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Delay Analysis — EDA Dashboard</title>
+    <meta name="description" content="Dashboard interativo de análise exploratória de dados de atrasos de voos dos EUA (2015)">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-text">
+                <h1>✈️ Flight Delay Analysis</h1>
+                <p class="subtitle">Análise Exploratória de Dados e Machine Learning (2015)</p>
+            </div>
+            <div class="header-badge">
+                <span class="badge">FIAP Pós-Graduação MLOps</span>
+                <span class="badge badge-secondary">TC3 — EDA & ML</span>
+            </div>
+            <div class="tabs-container">
+                <button class="tab-btn active" data-target="eda-content">Análise Exploratória (EDA)</button>
+                <button class="tab-btn" data-target="ml-content">Machine Learning</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- TAB CONTENT: EDA -->
+    <div id="eda-content" class="tab-content active">
+
+    <!-- KPI Section -->
+    <section class="section" id="kpi-section">
+        <h2 class="section-title">Visão Geral</h2>
+        <div class="kpi-grid" id="kpi-grid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+    <!-- Delay Distribution -->
+    <section class="section" id="distribution-section">
+        <h2 class="section-title">Distribuição de Atrasos</h2>
+        <div class="chart-grid-2">
+            <div class="card">
+                <h3 class="card-title">Histograma de Atrasos de Chegada</h3>
+                <div class="chart-container">
+                    <canvas id="histogram-chart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Categorias de Atraso</h3>
+                <div class="chart-container chart-container-square">
+                    <canvas id="categories-chart"></canvas>
+                </div>
+                <div class="stats-grid" id="delay-stats">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Temporal Analysis -->
+    <section class="section" id="temporal-section">
+        <h2 class="section-title">Análise Temporal</h2>
+        <div class="chart-grid-2">
+            <div class="card">
+                <h3 class="card-title">Atraso Médio por Mês</h3>
+                <div class="chart-container">
+                    <canvas id="monthly-delay-chart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Taxa de Atraso por Mês (%)</h3>
+                <div class="chart-container">
+                    <canvas id="monthly-rate-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="chart-grid-2">
+            <div class="card">
+                <h3 class="card-title">Atraso Médio por Dia da Semana</h3>
+                <div class="chart-container">
+                    <canvas id="dow-chart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Atraso Médio por Período do Dia</h3>
+                <div class="chart-container">
+                    <canvas id="period-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Airlines -->
+    <section class="section" id="airlines-section">
+        <h2 class="section-title">Companhias Aéreas</h2>
+        <div class="chart-grid-2">
+            <div class="card">
+                <h3 class="card-title">Companhias com Maior Atraso Médio</h3>
+                <div class="chart-container chart-container-tall">
+                    <canvas id="airlines-delay-chart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Companhias com Mais Voos</h3>
+                <div class="chart-container chart-container-tall">
+                    <canvas id="airlines-volume-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Airports -->
+    <section class="section" id="airports-section">
+        <h2 class="section-title">Aeroportos</h2>
+        <div class="chart-grid-2">
+            <div class="card">
+                <h3 class="card-title">Top 10 — Maior Atraso na Partida</h3>
+                <div class="chart-container chart-container-tall">
+                    <canvas id="airports-origin-chart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Top 10 — Maior Atraso na Chegada</h3>
+                <div class="chart-container chart-container-tall">
+                    <canvas id="airports-dest-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Correlation -->
+    <section class="section" id="correlation-section">
+        <h2 class="section-title">Matriz de Correlação</h2>
+        <div class="card">
+            <h3 class="card-title">Correlação entre Variáveis Numéricas</h3>
+            <div class="heatmap-container" id="heatmap-container">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cancellations -->
+    <section class="section" id="cancellations-section">
+        <h2 class="section-title">Cancelamentos e Desvios</h2>
+        <div class="chart-grid-3">
+            <div class="card">
+                <h3 class="card-title">Motivos de Cancelamento</h3>
+                <div class="chart-container chart-container-square">
+                    <canvas id="cancel-reasons-chart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Taxa de Cancelamento por Mês</h3>
+                <div class="chart-container">
+                    <canvas id="cancel-monthly-chart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Tipos de Atraso (Acumulado)</h3>
+                <div class="chart-container chart-container-square">
+                    <canvas id="delay-types-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div> <!-- End EDA Content -->
+
+    <!-- TAB CONTENT: Machine Learning -->
+    <div id="ml-content" class="tab-content">
+        <!-- Classification -->
+        <section class="section" id="supervised-section">
+            <h2 class="section-title">Aprendizado Supervisionado (Classificação de Atrasos)</h2>
+            <div class="chart-grid-2">
+                <div class="card">
+                    <h3 class="card-title">Comparação de Modelos</h3>
+                    <div class="chart-container">
+                        <canvas id="model-comparison-chart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Importância de Atributos (Random Forest)</h3>
+                    <div class="chart-container chart-container-tall">
+                        <canvas id="feature-importance-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-grid-2">
+                <div class="card">
+                    <h3 class="card-title">Curvas ROC e PR</h3>
+                    <div class="tabs-inner">
+                        <button class="tab-inner-btn active" data-target="roc-chart" onclick="switchInnerTab('roc')">ROC Curve</button>
+                        <button class="tab-inner-btn" data-target="pr-chart" onclick="switchInnerTab('pr')">PR Curve</button>
+                    </div>
+                    <div class="chart-container" style="margin-top:1rem;">
+                        <canvas id="roc-pr-chart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Matriz de Confusão (Random Forest)</h3>
+                    <div class="heatmap-container" id="cm-heatmap-container" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clustering -->
+        <section class="section" id="unsupervised-section">
+            <h2 class="section-title">Aprendizado Não Supervisionado (Agrupamento de Rotas)</h2>
+            <div class="chart-grid-2">
+                <div class="card">
+                    <h3 class="card-title">K-Means: Método do Cotovelo</h3>
+                    <div class="chart-container">
+                        <canvas id="elbow-chart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">PCA: Variância Explicada</h3>
+                    <div class="chart-container">
+                        <canvas id="pca-variance-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-grid-2">
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h3 class="card-title">Distribuição de Rotas (PCA 2D)</h3>
+                    <div class="chart-container chart-container-tall">
+                        <canvas id="pca-scatter-chart"></canvas>
+                    </div>
+                </div>
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h3 class="card-title">Perfil dos Clusters</h3>
+                    <div class="chart-container chart-container-tall">
+                        <canvas id="cluster-profiles-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div> <!-- End ML Content -->
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>FIAP Pós-Graduação MLOps — Tech Challenge 3 — Análise Exploratória de Dados</p>
+        <p class="footer-note">Dados: US DOT Flight Data (2015) · Amostra de 10%</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -29,22 +29,20 @@ Este projeto aplica técnicas de **Machine Learning supervisionado e não superv
 ```
 .
 ├── data/
-│   ├── raw/              # Dados originais
-│   ├── processed/        # Dados processados
-│   └── external/         # Dados externos (feriados, clima, etc)
+│   ├── airlines.csv          # Companhias aéreas (IATA_CODE, AIRLINE)
+│   ├── airports.csv          # Aeroportos (IATA_CODE, CITY, STATE, etc)
+│   ├── flights.csv           # Dados de voos (~592MB) ⚠️
+│   └── processed/            # Dados processados pelo EDA
 ├── notebooks/
-│   ├── 01_eda.ipynb                    # Análise exploratória
-│   ├── 02_preprocessing.ipynb          # Pré-processamento
-│   ├── 03_supervised_models.ipynb      # Modelos supervisionados
-│   └── 04_unsupervised_models.ipynb    # Modelos não supervisionados
+│   └── 01_eda.ipynb          # Análise exploratória (notebook)
 ├── src/
-│   ├── data/             # Scripts de ingestão e transformação
-│   ├── features/         # Feature engineering
-│   ├── models/           # Código dos modelos
-│   └── visualization/    # Funções de visualização
-├── models/               # Modelos treinados salvos
-├── docs/                 # Documentação adicional
-├── requirements.txt      # Dependências do projeto
+│   └── 01_eda.py             # Análise exploratória (script)
+├── docs/
+│   ├── eda_plots/            # Visualizações geradas pelo EDA
+│   └── tc3.md                # Enunciado do Tech Challenge
+├── tasks/
+│   └── task01.md             # Especificação da Task 01
+├── requirements.txt          # Dependências do projeto
 └── README.md
 ```
 
@@ -93,6 +91,16 @@ jupyter notebook
 ```
 
 Navegue até a pasta `notebooks/` e execute os notebooks na ordem numérica.
+
+### 5. Execute o Dashboard
+
+Para visualizar o dashboard com os resultados das análises e dos modelos:
+
+```bash
+npx -y serve . -l 3847
+```
+
+Feito isso, abra o navegador e acesse: [http://localhost:3847/dashboard/](http://localhost:3847/dashboard/)
 
 ---
 
