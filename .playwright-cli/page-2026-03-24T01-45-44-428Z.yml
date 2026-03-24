@@ -1,0 +1,64 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - heading "✈️ Flight Delay Analysis" [level=1] [ref=e5]
+        - paragraph [ref=e6]: Análise Exploratória de Dados e Machine Learning (2015)
+      - generic [ref=e7]:
+        - generic [ref=e8]: FIAP Pós-Graduação MLOps
+        - generic [ref=e9]: TC3 — EDA & ML
+      - generic [ref=e10]:
+        - button "Análise Exploratória (EDA)" [ref=e11] [cursor=pointer]
+        - button "Machine Learning" [active] [ref=e12] [cursor=pointer]
+  - generic [ref=e217]:
+    - generic [ref=e218]:
+      - heading "Aprendizado Supervisionado (Classificação de Atrasos)" [level=2] [ref=e219]
+      - generic [ref=e220]:
+        - heading "Comparação de Modelos" [level=3] [ref=e222]
+        - heading "Importância de Atributos (Random Forest)" [level=3] [ref=e226]
+      - generic [ref=e229]:
+        - generic [ref=e230]:
+          - heading "Curvas ROC e PR" [level=3] [ref=e231]
+          - generic [ref=e232]:
+            - button "ROC Curve" [ref=e233] [cursor=pointer]
+            - button "PR Curve" [ref=e234] [cursor=pointer]
+        - generic [ref=e237]:
+          - heading "Matriz de Confusão (Random Forest)" [level=3] [ref=e238]
+          - table [ref=e240]:
+            - rowgroup [ref=e241]:
+              - 'row "Predito: No Prazo Predito: Atrasado" [ref=e242]':
+                - columnheader [ref=e243]
+                - 'columnheader "Predito: No Prazo" [ref=e244]'
+                - 'columnheader "Predito: Atrasado" [ref=e245]'
+            - rowgroup [ref=e246]:
+              - 'row "Real: No Prazo Verdadeiro Negativo 45.5K 52.9% Falso Positivo 25.2K 29.3%" [ref=e247]':
+                - 'cell "Real: No Prazo" [ref=e248]'
+                - cell "Verdadeiro Negativo 45.5K 52.9%" [ref=e249]:
+                  - generic [ref=e250]: Verdadeiro Negativo
+                  - generic [ref=e251]: 45.5K
+                  - generic [ref=e252]: 52.9%
+                - cell "Falso Positivo 25.2K 29.3%" [ref=e253]:
+                  - generic [ref=e254]: Falso Positivo
+                  - generic [ref=e255]: 25.2K
+                  - generic [ref=e256]: 29.3%
+              - 'row "Real: Atrasado Falso Negativo 6.2K 7.3% Verdadeiro Positivo 9.1K 10.6%" [ref=e257]':
+                - 'cell "Real: Atrasado" [ref=e258]'
+                - cell "Falso Negativo 6.2K 7.3%" [ref=e259]:
+                  - generic [ref=e260]: Falso Negativo
+                  - generic [ref=e261]: 6.2K
+                  - generic [ref=e262]: 7.3%
+                - cell "Verdadeiro Positivo 9.1K 10.6%" [ref=e263]:
+                  - generic [ref=e264]: Verdadeiro Positivo
+                  - generic [ref=e265]: 9.1K
+                  - generic [ref=e266]: 10.6%
+    - generic [ref=e267]:
+      - heading "Aprendizado Não Supervisionado (Agrupamento de Rotas)" [level=2] [ref=e268]
+      - generic [ref=e269]:
+        - 'heading "K-Means: Método do Cotovelo" [level=3] [ref=e271]'
+        - 'heading "PCA: Variância Explicada" [level=3] [ref=e275]'
+      - generic [ref=e278]:
+        - heading "Distribuição de Rotas (PCA 2D)" [level=3] [ref=e280]
+        - heading "Perfil dos Clusters" [level=3] [ref=e284]
+  - contentinfo [ref=e214]:
+    - paragraph [ref=e215]: FIAP Pós-Graduação MLOps — Tech Challenge 3 — Análise Exploratória de Dados
+    - paragraph [ref=e216]: "Dados: US DOT Flight Data (2015) · Amostra de 10%"

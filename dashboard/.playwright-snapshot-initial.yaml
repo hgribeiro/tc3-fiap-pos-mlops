@@ -1,0 +1,177 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - heading "✈️ Flight Delay Analysis" [level=1] [ref=e5]
+        - paragraph [ref=e6]: Análise Exploratória de Dados e Machine Learning (2015)
+      - generic [ref=e7]:
+        - generic [ref=e8]: FIAP Pós-Graduação MLOps
+        - generic [ref=e9]: TC3 — EDA & ML
+      - generic [ref=e10]:
+        - button "Análise Exploratória (EDA)" [ref=e11] [cursor=pointer]
+        - button "Machine Learning" [ref=e12] [cursor=pointer]
+  - generic [ref=e13]:
+    - generic [ref=e14]:
+      - heading "Visão Geral" [level=2] [ref=e15]
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]: ✈️
+          - generic [ref=e19]: 582.3K
+          - generic [ref=e20]: Total de Voos
+        - generic [ref=e21]:
+          - generic [ref=e22]: ⏱️
+          - generic [ref=e23]: 35.73%
+          - generic [ref=e24]: Taxa de Atraso
+        - generic [ref=e25]:
+          - generic [ref=e26]: 🕐
+          - generic [ref=e27]: 33.2 min
+          - generic [ref=e28]: Atraso Médio
+        - generic [ref=e29]:
+          - generic [ref=e30]: ❌
+          - generic [ref=e31]: 1.56%
+          - generic [ref=e32]: Cancelamentos
+        - generic [ref=e33]:
+          - generic [ref=e34]: ↪️
+          - generic [ref=e35]: 0.28%
+          - generic [ref=e36]: Desvios
+        - generic [ref=e37]:
+          - generic [ref=e38]: 🏢
+          - generic [ref=e39]: "14"
+          - generic [ref=e40]: Companhias
+        - generic [ref=e41]:
+          - generic [ref=e42]: 🛫
+          - generic [ref=e43]: "925"
+          - generic [ref=e44]: Aeroportos
+        - generic [ref=e45]:
+          - generic [ref=e46]: 📏
+          - generic [ref=e47]: 823 mi
+          - generic [ref=e48]: Distância Média
+        - generic [ref=e49]:
+          - generic [ref=e50]: 📊
+          - generic [ref=e51]: 15 min
+          - generic [ref=e52]: Mediana do Atraso
+    - generic [ref=e53]:
+      - heading "Distribuição de Atrasos" [level=2] [ref=e54]
+      - generic [ref=e55]:
+        - heading "Histograma de Atrasos de Chegada" [level=3] [ref=e57]
+        - generic [ref=e60]:
+          - heading "Categorias de Atraso" [level=3] [ref=e61]
+          - generic [ref=e64]:
+            - generic [ref=e65]:
+              - generic [ref=e66]: Média
+              - generic [ref=e67]: 4.37 min
+            - generic [ref=e68]:
+              - generic [ref=e69]: Mediana
+              - generic [ref=e70]: "-5 min"
+            - generic [ref=e71]:
+              - generic [ref=e72]: Desvio Padrão
+              - generic [ref=e73]: 39.06 min
+            - generic [ref=e74]:
+              - generic [ref=e75]: Q25–Q75
+              - generic [ref=e76]: "-13 — 8"
+    - generic [ref=e77]:
+      - heading "Análise Temporal" [level=2] [ref=e78]
+      - generic [ref=e79]:
+        - heading "Atraso Médio por Mês" [level=3] [ref=e81]
+        - heading "Taxa de Atraso por Mês (%)" [level=3] [ref=e85]
+      - generic [ref=e88]:
+        - heading "Atraso Médio por Dia da Semana" [level=3] [ref=e90]
+        - heading "Atraso Médio por Período do Dia" [level=3] [ref=e94]
+    - generic [ref=e97]:
+      - heading "Companhias Aéreas" [level=2] [ref=e98]
+      - generic [ref=e99]:
+        - heading "Companhias com Maior Atraso Médio" [level=3] [ref=e101]
+        - heading "Companhias com Mais Voos" [level=3] [ref=e105]
+    - generic [ref=e108]:
+      - heading "Aeroportos" [level=2] [ref=e109]
+      - generic [ref=e110]:
+        - heading "Top 10 — Maior Atraso na Partida" [level=3] [ref=e112]
+        - heading "Top 10 — Maior Atraso na Chegada" [level=3] [ref=e116]
+    - generic [ref=e119]:
+      - heading "Matriz de Correlação" [level=2] [ref=e120]
+      - generic [ref=e121]:
+        - heading "Correlação entre Variáveis Numéricas" [level=3] [ref=e122]
+        - table [ref=e124]:
+          - rowgroup [ref=e125]:
+            - row "Dep. Delay Arr. Delay Air Time Distance Taxi Out Taxi In Elapsed" [ref=e126]:
+              - columnheader [ref=e127]
+              - columnheader "Dep. Delay" [ref=e128]
+              - columnheader "Arr. Delay" [ref=e129]
+              - columnheader "Air Time" [ref=e130]
+              - columnheader "Distance" [ref=e131]
+              - columnheader "Taxi Out" [ref=e132]
+              - columnheader "Taxi In" [ref=e133]
+              - columnheader "Elapsed" [ref=e134]
+          - rowgroup [ref=e135]:
+            - row "Dep. Delay 1.00 0.94 0.02 0.03 0.06 0.01 0.03" [ref=e136]:
+              - cell "Dep. Delay" [ref=e137]
+              - cell "1.00" [ref=e138]
+              - cell "0.94" [ref=e139]
+              - cell "0.02" [ref=e140]
+              - cell "0.03" [ref=e141]
+              - cell "0.06" [ref=e142]
+              - cell "0.01" [ref=e143]
+              - cell "0.03" [ref=e144]
+            - row "Arr. Delay 0.94 1.00 -0.01 -0.02 0.23 0.11 0.03" [ref=e145]:
+              - cell "Arr. Delay" [ref=e146]
+              - cell "0.94" [ref=e147]
+              - cell "1.00" [ref=e148]
+              - cell "-0.01" [ref=e149]
+              - cell "-0.02" [ref=e150]
+              - cell "0.23" [ref=e151]
+              - cell "0.11" [ref=e152]
+              - cell "0.03" [ref=e153]
+            - row "Air Time 0.02 -0.01 1.00 0.99 0.09 0.08 0.99" [ref=e154]:
+              - cell "Air Time" [ref=e155]
+              - cell "0.02" [ref=e156]
+              - cell "-0.01" [ref=e157]
+              - cell "1.00" [ref=e158]
+              - cell "0.99" [ref=e159]
+              - cell "0.09" [ref=e160]
+              - cell "0.08" [ref=e161]
+              - cell "0.99" [ref=e162]
+            - row "Distance 0.03 -0.02 0.99 1.00 0.07 0.08 0.97" [ref=e163]:
+              - cell "Distance" [ref=e164]
+              - cell "0.03" [ref=e165]
+              - cell "-0.02" [ref=e166]
+              - cell "0.99" [ref=e167]
+              - cell "1.00" [ref=e168]
+              - cell "0.07" [ref=e169]
+              - cell "0.08" [ref=e170]
+              - cell "0.97" [ref=e171]
+            - row "Taxi Out 0.06 0.23 0.09 0.07 1.00 -0.00 0.21" [ref=e172]:
+              - cell "Taxi Out" [ref=e173]
+              - cell "0.06" [ref=e174]
+              - cell "0.23" [ref=e175]
+              - cell "0.09" [ref=e176]
+              - cell "0.07" [ref=e177]
+              - cell "1.00" [ref=e178]
+              - cell "-0.00" [ref=e179]
+              - cell "0.21" [ref=e180]
+            - row "Taxi In 0.01 0.11 0.08 0.08 -0.00 1.00 0.16" [ref=e181]:
+              - cell "Taxi In" [ref=e182]
+              - cell "0.01" [ref=e183]
+              - cell "0.11" [ref=e184]
+              - cell "0.08" [ref=e185]
+              - cell "0.08" [ref=e186]
+              - cell "-0.00" [ref=e187]
+              - cell "1.00" [ref=e188]
+              - cell "0.16" [ref=e189]
+            - row "Elapsed 0.03 0.03 0.99 0.97 0.21 0.16 1.00" [ref=e190]:
+              - cell "Elapsed" [ref=e191]
+              - cell "0.03" [ref=e192]
+              - cell "0.03" [ref=e193]
+              - cell "0.99" [ref=e194]
+              - cell "0.97" [ref=e195]
+              - cell "0.21" [ref=e196]
+              - cell "0.16" [ref=e197]
+              - cell "1.00" [ref=e198]
+    - generic [ref=e199]:
+      - heading "Cancelamentos e Desvios" [level=2] [ref=e200]
+      - generic [ref=e201]:
+        - heading "Motivos de Cancelamento" [level=3] [ref=e203]
+        - heading "Taxa de Cancelamento por Mês" [level=3] [ref=e207]
+        - heading "Tipos de Atraso (Acumulado)" [level=3] [ref=e211]
+  - contentinfo [ref=e214]:
+    - paragraph [ref=e215]: FIAP Pós-Graduação MLOps — Tech Challenge 3 — Análise Exploratória de Dados
+    - paragraph [ref=e216]: "Dados: US DOT Flight Data (2015) · Amostra de 10%"
