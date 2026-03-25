@@ -124,13 +124,19 @@ Feito isso, abra o navegador e acesse: [http://localhost:3847/dashboard/](http:/
 - Identificação de outliers e missing values
 - Visualizações com insights de negócio
 
-### 2. **Modelagem Supervisionada**
+### 2. **Engenharia de Features (Feature Engineering)**
+- Criação de novas features (temporais, métricas agregadas)
+- Codificação de variáveis categóricas (Encoding)
+- Tratamento e imputação de valores ausentes
+- Padronização/Normalização de atributos numéricos (Scaling) e seleção de features
+
+### 3. **Modelagem Supervisionada**
 
 **Classificação**: Prever se um voo atrasará (binário)
 - Algoritmos testados: Logistic Regression, Random Forest, Gradient Boosting
 - Métricas: Accuracy, Precision, Recall, F1-Score, AUC-ROC
 
-### 3. **Modelagem Não Supervisionada**
+### 4. **Modelagem Não Supervisionada**
 
 **Clusterização**:
 - K-Means para agrupamento de aeroportos/rotas
@@ -139,7 +145,7 @@ Feito isso, abra o navegador e acesse: [http://localhost:3847/dashboard/](http:/
 **Redução de Dimensionalidade**:
 - PCA para visualização de alta dimensionalidade
 
-### 4. **Interpretação e Conclusões**
+### 5. **Interpretação e Conclusões**
 - Feature importance
 - SHAP values para explicabilidade
 - Limitações dos modelos
