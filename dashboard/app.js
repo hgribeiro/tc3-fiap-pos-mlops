@@ -707,6 +707,10 @@ function setupTabs() {
                 renderMachineLearning();
                 window.mlLoaded = true;
             }
+            if (target === 'story-content' && !window.storyLoaded) {
+                renderStorytelling();
+                window.storyLoaded = true;
+            }
         });
     });
 }
@@ -1072,6 +1076,70 @@ async function renderPcaScatter() {
             scales: {
                 x: { title: { display: true, text: 'Componente Principal 1' } },
                 y: { title: { display: true, text: 'Componente Principal 2' } }
+            }
+        }
+    });
+}
+
+// ===== Storytelling Rendering =====
+async function renderStorytelling() {
+    try {
+        await renderStoryFeatureChart();
+        console.log('✅ Storytelling tab loaded successfully');
+    } catch (err) {
+        console.error('❌ Error loading storytelling tab:', err);
+    }
+}
+
+async function renderStoryFeatureChart() {
+    const data = await loadJSON('ml_feature_importance.json');
+    const ctx = document.getElementById('story-feature-chart').getContext('2d');
+    
+    const targetFeatures = ['SCHEDULED_TIME', 'MONTH', 'AIRLINE', 'DISTANCE'];
+    const friendlyNames = {
+        'SCHEDULED_TIME': 'Horário Programado',
+        'MONTH': 'Mês do Ano',
+        'AIRLINE': 'Companhia Aérea',
+        'DISTANCE': 'Distância do Voo'
+    };
+    
+    const filteredFeatures = data.features.filter(f => targetFeatures.includes(f.name));
+    filteredFeatures.sort((a,b) => b.importance - a.importance);
+    
+    const labels = filteredFeatures.map(f => friendlyNames[f.name]);
+    const values = filteredFeatures.map(f => f.importance);
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Relevância no Atraso',
+                data: values,
+                backgroundColor: alpha(COLORS.blue, 0.8),
+                borderRadius: 4
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: () => ' Alto Impacto no Atraso'
+                    }
+                }
+            },
+            scales: {
+                x: { display: false },
+                y: {
+                    ticks: {
+                        font: { size: 13, weight: '600' },
+                        color: '#f1f5f9'
+                    }
+                }
             }
         }
     });

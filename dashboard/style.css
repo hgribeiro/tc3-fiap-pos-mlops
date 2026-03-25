@@ -436,6 +436,116 @@ body {
     white-space: nowrap;
 }
 
+/* ===== Storytelling Specifics ===== */
+.story-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.insight-text {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.insight-text strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.highlight-card {
+    border-top: 4px solid var(--accent-blue);
+}
+
+.big-number-highlight {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: -0.04em;
+    margin: 1rem 0 0.5rem;
+}
+
+.red-highlight { background: var(--gradient-red); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.green-highlight { background: var(--gradient-green); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+.insight-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.insight-list {
+    list-style: none;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.insight-list li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.insight-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent-blue);
+    font-weight: bold;
+}
+
+.insight-list strong {
+    color: var(--text-primary);
+}
+
+.story-takeaway {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.faq-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-card);
+    padding: 1.5rem;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.faq-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.faq-item h4 {
+    color: var(--accent-cyan);
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+}
+
+.faq-item p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.text-center { text-align: center; }
+.mt-1 { margin-top: 1rem; }
+
 /* ===== Footer ===== */
 .footer {
     max-width: 1400px;

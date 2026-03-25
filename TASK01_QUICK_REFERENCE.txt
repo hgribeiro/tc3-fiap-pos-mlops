@@ -1,0 +1,208 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    TASK 01 - EDA QUICK REFERENCE CARD                      ║
+║                    Flight Delay Prediction Analysis (2015)                 ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+┌─ EXECUTION STATUS ─────────────────────────────────────────────────────────┐
+│                                                                              │
+│  ✅ COMPLETED SUCCESSFULLY                                                 │
+│  • Execution Time: ~5 minutes                                              │
+│  • Date: 2026-03-23                                                        │
+│  • Script: src/01_eda.py                                                   │
+│  • Dataset: data/flights.csv (592MB)                                       │
+│  • Output: 81MB processed data + 7 visualizations                          │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ DATASET OVERVIEW ─────────────────────────────────────────────────────────┐
+│                                                                              │
+│  Total Flights Analyzed:      582,319 records                              │
+│  Time Period:                 January-December 2015 (Full Year)            │
+│  Airlines:                    15 unique carriers                           │
+│  Airports:                    301 unique airports                          │
+│  Features:                    28 total (15 numeric + 11 categoric + 2 derv)│
+│  Data Quality:                GOOD (>99% completeness)                     │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ KEY FINDING #1: DELAY RATES ──────────────────────────────────────────────┐
+│                                                                              │
+│  Delayed Flights (>15 min):        208,074 (35.7%) 🔴                     │
+│  On-Time Flights (≤15 min):        374,245 (64.3%) 🟢                     │
+│  Cancelled:                          9,099 (1.56%)                         │
+│                                                                              │
+│  Average Delay (when delayed):     33.16 minutes                           │
+│  Max Delay:                        924 minutes (15.4 hours)                │
+│  Std Dev:                          34.96 minutes                           │
+│                                                                              │
+│  👉 TARGET DISTRIBUTION: Slight imbalance (35.7% vs 64.3%)                │
+│     → Use stratified split + AUC-ROC metric                               │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ KEY FINDING #2: DEPARTURE→ARRIVAL CORRELATION ────────────────────────────┐
+│                                                                              │
+│  Pearson Correlation: r = 0.944 ████████████████████ 94.4%                │
+│                                                                              │
+│  💡 INSIGHT: Departure delays STRONGLY predict arrival delays              │
+│  🎯 ACTION: Use DEPARTURE_DELAY as a powerful predictor feature            │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ KEY FINDING #3: TEMPORAL PATTERNS ────────────────────────────────────────┐
+│                                                                              │
+│  WORST MONTH:          June (6)            41% delay rate, +9.81 min       │
+│  BEST MONTH:           September (9)       31% delay rate, -0.42 min       │
+│  WORST DAY OF WEEK:    Monday (1)          38% delay rate, +6.07 min       │
+│  BEST DAY OF WEEK:     Friday (6)          31% delay rate, +2.00 min       │
+│                                                                              │
+│  WORST TIME:           Evening (17:00)     +9.75 min delay ⏰              │
+│  BEST TIME:            Morning (05:00)     +0.20 min delay ⏰              │
+│                        → 49x BETTER at morning! ⭐⭐⭐⭐⭐               │
+│                                                                              │
+│  👉 ACTION: Include MONTH, DAY_OF_WEEK, DEPARTURE_PERIOD as features      │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ KEY FINDING #4: AIRLINE PERFORMANCE ──────────────────────────────────────┐
+│                                                                              │
+│  WORST PERFORMERS (High Delays):                                           │
+│  • NK (Spirit):              +14.20 min   ← REGIONAL CARRIER               │
+│  • F9 (Frontier):            +12.08 min   ← REGIONAL CARRIER               │
+│  • MQ (Endeavor):            +11.29 min   ← REGIONAL CARRIER               │
+│                                                                              │
+│  BEST PERFORMERS (Low Delays):                                             │
+│  • UA (United):              +5.84 min                                     │
+│  • AS (Alaska):              +6.07 min                                     │
+│  • DL (Delta):               +7.58 min                                     │
+│                                                                              │
+│  HIGHEST VOLUME:                                                           │
+│  • WN (Southwest):           126,719 flights (21.8% of total)             │
+│  • DL (Delta):               87,400 flights (15.0% of total)              │
+│                                                                              │
+│  👉 ACTION: Include AIRLINE as feature (8.3 min spread!)                  │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ KEY FINDING #5: DISTANCE ≠ DELAY 🚫 ─────────────────────────────────────┐
+│                                                                              │
+│  Distance vs Arrival Delay Correlation:  r = -0.024 (NEGLIGIBLE!)         │
+│                                                                              │
+│  HYPOTHESIS: Longer flights → more delays                                  │
+│  RESULT: ❌ REFUTED                                                        │
+│                                                                              │
+│  👉 ACTION: Don't rely on DISTANCE alone as predictor                      │
+│            Consider INTERACTION effects if including it                    │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ KEY FINDING #6: AIRPORT HUB EFFECTS ──────────────────────────────────────┐
+│                                                                              │
+│  TOP HUB AIRPORTS (High Volume, Good Operations):                          │
+│  • ATL (Atlanta):        34,953 flights,    +6.12 min delay                │
+│  • ORD (Chicago):        28,529 flights,    +5.41 min delay                │
+│  • DFW (Dallas):         23,822 flights,    +4.28 min delay                │
+│                                                                              │
+│  SMALL AIRPORTS (High Delay Variance):                                     │
+│  • STC:                  +47.56 min delay (sparse operations)              │
+│  • ITH:                  +40.37 min delay (sparse operations)              │
+│  • PPG:                  +64.90 min delay destination (sparse)             │
+│                                                                              │
+│  👉 ACTION: Include ORIGIN_AIRPORT and DESTINATION_AIRPORT as features    │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ FEATURES FOR MODELING ────────────────────────────────────────────────────┐
+│                                                                              │
+│  ✅ MUST INCLUDE:                                                          │
+│     • MONTH               (seasonality)                                    │
+│     • DAY_OF_WEEK         (Monday effect)                                  │
+│     • DEPARTURE_PERIOD    (49x variation!)                                 │
+│     • AIRLINE             (8.3 min spread)                                 │
+│     • ORIGIN_AIRPORT      (hub effects)                                    │
+│     • DESTINATION_AIRPORT (congestión)                                     │
+│     • SCHEDULED_DEPARTURE (temporal signal)                                │
+│                                                                              │
+│  ⚠️  CONSIDER:                                                              │
+│     • DISTANCE            (weak r=-0.024, but interaction potential)       │
+│     • TAIL_NUMBER         (aircraft-specific, if maintenance data known)   │
+│                                                                              │
+│  ❌ AVOID (Data Leakage):                                                  │
+│     • AIR_TIME            (colinear r=0.99 with DISTANCE)                 │
+│     • ELAPSED_TIME        (post-hoc variable)                             │
+│     • WHEELS_OFF/ON       (actual times)                                   │
+│     • TAXI_OUT/IN         (actual operational times)                       │
+│                                                                              │
+│  🎯 TARGET VARIABLE:                                                        │
+│     IS_DELAYED = (ARRIVAL_DELAY > 15 minutes)                              │
+│     Distribution: 35.7% positive, 64.3% negative (use stratified split)   │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ ARTIFACTS GENERATED ──────────────────────────────────────────────────────┐
+│                                                                              │
+│  📊 Processed Data:                                                         │
+│     ✅ data/processed/flights_sample_processed.csv (81MB)                  │
+│     ✅ data/processed/eda_summary.json                                     │
+│                                                                              │
+│  📈 Visualizations (7 PNG files):                                          │
+│     ✅ 01_distribuicao_atrasos.png          (distribution analysis)        │
+│     ✅ 02_analise_temporal.png              (temporal patterns)            │
+│     ✅ 03_analise_companhias.png            (airline comparison)           │
+│     ✅ 04_analise_aeroportos.png            (airport analysis)             │
+│     ✅ 05_correlacao.png                    (correlation matrix)           │
+│     ✅ 06_distancia_vs_atraso.png           (distance vs delay)            │
+│     ✅ 07_cancelamentos.png                 (cancellation analysis)        │
+│                                                                              │
+│  📝 Documentation:                                                          │
+│     ✅ TASK01_ANALISE_COMPLETA.md           (detailed analysis)            │
+│     ✅ TASK01_SUMARIO_EXECUTIVO.md          (executive summary)            │
+│     ✅ TASK01_DETAILED_METRICS.md           (metrics & tables)             │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ NEXT STEPS ───────────────────────────────────────────────────────────────┐
+│                                                                              │
+│  Phase 2: Feature Engineering                                              │
+│  Command: python src/02_feature_engineering.py                            │
+│                                                                              │
+│  Expected outputs:                                                         │
+│  • X_train.parquet, X_val.parquet, X_test.parquet (features)              │
+│  • y_train.parquet, y_val.parquet, y_test.parquet (targets)               │
+│  • models/encoders.json (categorical encoders)                            │
+│  • models/scaler.pkl (numerical scaler)                                    │
+│                                                                              │
+│  Then:                                                                     │
+│  Phase 3: Supervised Classification (python src/03_supervised_...)        │
+│  Phase 4: Unsupervised Models (python src/04_unsupervised.py)            │
+│  Phase 5: Model Report & Dashboard (python src/05_model_report.py)       │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ QUICK STATS TABLE ────────────────────────────────────────────────────────┐
+│                                                                              │
+│  Metric                          Value              Status                  │
+│  ───────────────────────────────────────────────────────────────────────   │
+│  Total Flights                   582,319            ✅ Good size            │
+│  Delayed (>15 min)               208,074 (35.7%)    ✅ Balanced             │
+│  Data Completeness               >99%               ✅ Excellent            │
+│  Missing Values                  Minimal            ✅ Good                 │
+│  Duplicates                      0                  ✅ Perfect              │
+│  TIME SEASONALITY                Clear patterns     ✅ Strong signal        │
+│  AIRLINE VARIATION               8.3 min spread     ✅ Useful feature       │
+│  AIRPORT HUB EFFECT              Strong             ✅ Useful feature       │
+│  DISTANCE PREDICTIVE POWER       r = -0.024         ⚠️  Weak alone          │
+│  DEPARTURE→ARRIVAL CORRELATION   r = 0.944          ✅ Strong predictor     │
+│  DATA READY FOR MODELING         YES                ✅ READY               │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+═════════════════════════════════════════════════════════════════════════════
+
+STATUS: ✅ TASK 01 COMPLETED SUCCESSFULLY
+RECOMMENDATION: ✅ READY FOR PHASE 2 (FEATURE ENGINEERING)
+EXECUTION TIME: ~5 minutes
+QUALITY SCORE: 8/10 (GOOD)
+
+═════════════════════════════════════════════════════════════════════════════
+Generated: 2026-03-23 | Script: src/01_eda.py | Data: flights.csv

@@ -25,6 +25,7 @@
             <div class="tabs-container">
                 <button class="tab-btn active" data-target="eda-content">Análise Exploratória (EDA)</button>
                 <button class="tab-btn" data-target="ml-content">Machine Learning</button>
+                <button class="tab-btn" data-target="story-content">Insights Executivos</button>
             </div>
         </div>
     </header>
@@ -242,6 +243,98 @@
             </div>
         </section>
     </div> <!-- End ML Content -->
+
+    <!-- TAB CONTENT: Storytelling / Insights Executivos -->
+    <div id="story-content" class="tab-content">
+        <!-- 1. O Mapa do Atraso -->
+        <section class="section" id="story-map">
+            <h2 class="section-title">O Mapa do Atraso</h2>
+            <div class="chart-grid-2">
+                <div class="card story-card">
+                    <h3 class="card-title">Por que os voos atrasam?</h3>
+                    <p class="insight-text">
+                        Nossa análise revela um forte <strong>efeito cascata</strong> na malha aérea americana. Voos programados para o <strong>final da tarde e noite</strong> acumulam os pequenos atrasos gerados ao longo do dia, tornando-se os horários mais críticos.
+                    </p>
+                    <p class="insight-text mt-1">
+                        Fatores sazonais (meses de inverno e férias) e a <strong>Companhia Aérea operante</strong> são determinantes históricos pesados, sobrepondo-se à distância do voo.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Fatores de Maior Impacto</h3>
+                    <div class="chart-container">
+                        <canvas id="story-feature-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Perfis de Malha (Clusters) -->
+        <section class="section" id="story-clusters">
+            <h2 class="section-title">Perfis de Malha Aérea</h2>
+            <p class="insight-text text-center" style="margin-bottom: 1.5rem; max-width: 800px; margin-inline: auto;">
+                Agrupamos as rotas e descobrimos <strong>dois perfis operacionais distintos</strong> que exigem estratégias diferentes.
+            </p>
+            <div class="chart-grid-2">
+                <div class="card story-card highlight-card">
+                    <h3 class="card-title text-center">Rotas Curtas (Hubs)</h3>
+                    <div class="big-number-highlight red-highlight">34.0%</div>
+                    <p class="insight-label text-center">Taxa de Atraso Média</p>
+                    <ul class="insight-list">
+                        <li><strong>Perfil:</strong> Alta frequência, curtas distâncias (~600 mi)</li>
+                        <li><strong>Gargalos:</strong> Megahubs saturados (ATL, ORD, DFW)</li>
+                        <li><strong>Impacto:</strong> Atrasos reais no desembarque (+3.2 min médios)</li>
+                    </ul>
+                </div>
+                <div class="card story-card highlight-card">
+                    <h3 class="card-title text-center">Rotas Longas Cross-Country</h3>
+                    <div class="big-number-highlight green-highlight">31.5%</div>
+                    <p class="insight-label text-center">Taxa de Atraso Média</p>
+                    <ul class="insight-list">
+                        <li><strong>Perfil:</strong> Transcontinentais (~1900 mi)</li>
+                        <li><strong>Resiliência:</strong> Margem para recuperar tempo em voo</li>
+                        <li><strong>Impacto:</strong> Muitas vezes chegam adiantados (-0.7 min médios)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Prevenção e Visão de Futuro -->
+        <section class="section" id="story-prevention">
+            <h2 class="section-title">Capacidade de Prevenção</h2>
+            <div class="card story-card">
+                <h3 class="card-title">Previsão Inteligente com IA</h3>
+                <p class="insight-text">
+                    Nossos modelos de IA (Gradient Boosting) conseguem antecipar atrasos usando o histórico de voos. Ao otimizar o limiar do algoritmo, focamos na <strong>captura máxima de atrasos</strong> mantendo os falsos alarmes sob controle.
+                </p>
+                <div class="story-takeaway mt-1">
+                    <strong>Próximo Passo Estratégico:</strong> O histórico puro tem limites frente ao imprevisto. A integração com <strong>dados meteorológicos em tempo real</strong> é o investimento garantido para prever atrasos massivos no dia e elevar a eficiência operacional.
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Q&A Executivo -->
+        <section class="section" id="story-qa" style="margin-bottom: 3rem;">
+            <h2 class="section-title">Takeaways Executivos</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>Quais aeroportos são mais críticos?</h4>
+                    <p>Aeroportos de hub massivo (como ORD, ATL e DFW) acumulam o maior volume total de problemas devido à saturação.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Quais os piores horários?</h4>
+                    <p>O final da tarde e começo da noite. Atrasos matutinos causam um efeito cascata que compromete o resto da malha diária.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>E prever os atrasos para amanhã?</h4>
+                    <p>Conseguimos separar perfis de alto risco perfeitamente, mas incidentes climáticos exigirão dados externos para previsões mais precisas.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Como podemos agir com esses dados?</h4>
+                    <p>Focar processos de solo mais rigorosos nas "Rotas Curtas" de Hub, onde há menor margem para recuperar o tempo perdido em voo.</p>
+                </div>
+            </div>
+        </section>
+    </div> <!-- End Story Content -->
 
     <!-- Footer -->
     <footer class="footer">

@@ -1,0 +1,338 @@
+================================================================================
+1. CARREGAMENTO E EXPLORAÇÃO INICIAL DOS DATASETS
+================================================================================
+
+[1/3] Carregando airlines.csv...
+✓ Airlines carregado: (14, 2)
+
+[2/3] Carregando airports.csv...
+✓ Airports carregado: (322, 7)
+
+[3/3] Carregando flights.csv (arquivo grande - usando amostragem)...
+✓ Flights carregado (amostra 10%): (582319, 31)
+  Memória utilizada: 49.95 MB
+
+================================================================================
+2. VISÃO GERAL DOS DATASETS
+================================================================================
+
+--- AIRLINES ---
+Dimensões: 14 linhas x 2 colunas
+
+Primeiras linhas:
+  IATA_CODE                 AIRLINE
+0        UA   United Air Lines Inc.
+1        AA  American Airlines Inc.
+2        US         US Airways Inc.
+3        F9  Frontier Airlines Inc.
+4        B6         JetBlue Airways
+
+Tipos de dados:
+IATA_CODE    object
+AIRLINE      object
+dtype: object
+
+Total de companhias: 14
+
+--- AIRPORTS ---
+Dimensões: 322 linhas x 7 colunas
+
+Primeiras linhas:
+  IATA_CODE                              AIRPORT  ...  LATITUDE  LONGITUDE
+0       ABE  Lehigh Valley International Airport  ...  40.65236  -75.44040
+1       ABI             Abilene Regional Airport  ...  32.41132  -99.68190
+2       ABQ    Albuquerque International Sunport  ...  35.04022 -106.60919
+3       ABR            Aberdeen Regional Airport  ...  45.44906  -98.42183
+4       ABY   Southwest Georgia Regional Airport  ...  31.53552  -84.19447
+
+[5 rows x 7 columns]
+
+Tipos de dados:
+IATA_CODE     object
+AIRPORT       object
+CITY          object
+STATE         object
+COUNTRY       object
+LATITUDE     float64
+LONGITUDE    float64
+dtype: object
+
+Total de aeroportos: 322
+
+--- FLIGHTS (AMOSTRA) ---
+Dimensões: 582319 linhas x 31 colunas
+
+Primeiras linhas:
+   YEAR  MONTH  DAY  ...  AIRLINE_DELAY LATE_AIRCRAFT_DELAY  WEATHER_DELAY
+0  2015      1    1  ...            NaN                 NaN            NaN
+1  2015      1    1  ...            NaN                 NaN            NaN
+2  2015      1    1  ...            NaN                 NaN            NaN
+3  2015      1    1  ...            NaN                 NaN            NaN
+4  2015      1    1  ...            NaN                 NaN            NaN
+
+[5 rows x 31 columns]
+
+Tipos de dados:
+YEAR                      int16
+MONTH                      int8
+DAY                        int8
+DAY_OF_WEEK                int8
+AIRLINE                category
+FLIGHT_NUMBER             int32
+TAIL_NUMBER            category
+ORIGIN_AIRPORT         category
+DESTINATION_AIRPORT    category
+SCHEDULED_DEPARTURE       int16
+DEPARTURE_TIME          float32
+DEPARTURE_DELAY         float32
+TAXI_OUT                float32
+WHEELS_OFF              float32
+SCHEDULED_TIME          float32
+ELAPSED_TIME            float32
+AIR_TIME                float32
+DISTANCE                  int16
+WHEELS_ON               float32
+TAXI_IN                 float32
+SCHEDULED_ARRIVAL         int16
+ARRIVAL_TIME            float32
+ARRIVAL_DELAY           float32
+DIVERTED                   int8
+CANCELLED                  int8
+CANCELLATION_REASON    category
+AIR_SYSTEM_DELAY        float32
+SECURITY_DELAY          float32
+AIRLINE_DELAY           float32
+LATE_AIRCRAFT_DELAY     float32
+WEATHER_DELAY           float32
+dtype: object
+
+Colunas disponíveis:
+['YEAR', 'MONTH', 'DAY', 'DAY_OF_WEEK', 'AIRLINE', 'FLIGHT_NUMBER', 'TAIL_NUMBER', 'ORIGIN_AIRPORT', 'DESTINATION_AIRPORT', 'SCHEDULED_DEPARTURE', 'DEPARTURE_TIME', 'DEPARTURE_DELAY', 'TAXI_OUT', 'WHEELS_OFF', 'SCHEDULED_TIME', 'ELAPSED_TIME', 'AIR_TIME', 'DISTANCE', 'WHEELS_ON', 'TAXI_IN', 'SCHEDULED_ARRIVAL', 'ARRIVAL_TIME', 'ARRIVAL_DELAY', 'DIVERTED', 'CANCELLED', 'CANCELLATION_REASON', 'AIR_SYSTEM_DELAY', 'SECURITY_DELAY', 'AIRLINE_DELAY', 'LATE_AIRCRAFT_DELAY', 'WEATHER_DELAY']
+
+================================================================================
+3. QUALIDADE DOS DADOS
+================================================================================
+
+--- VALORES NULOS ---
+
+Airlines:
+IATA_CODE    0
+AIRLINE      0
+dtype: int64
+
+Airports:
+LATITUDE     3
+LONGITUDE    3
+dtype: int64
+
+Flights (Top 15 colunas com missing):
+CANCELLATION_REASON    573232
+LATE_AIRCRAFT_DELAY    476190
+WEATHER_DELAY          476190
+AIRLINE_DELAY          476190
+AIR_SYSTEM_DELAY       476190
+SECURITY_DELAY         476190
+ELAPSED_TIME            10700
+AIR_TIME                10700
+ARRIVAL_DELAY           10700
+WHEELS_ON                9368
+TAXI_IN                  9368
+ARRIVAL_TIME             9368
+WHEELS_OFF               9012
+TAXI_OUT                 9012
+DEPARTURE_TIME           8732
+dtype: int64
+
+Percentual de missing por coluna:
+CANCELLATION_REASON    98.439515
+LATE_AIRCRAFT_DELAY    81.774766
+WEATHER_DELAY          81.774766
+AIRLINE_DELAY          81.774766
+AIR_SYSTEM_DELAY       81.774766
+SECURITY_DELAY         81.774766
+ELAPSED_TIME            1.837481
+AIR_TIME                1.837481
+ARRIVAL_DELAY           1.837481
+WHEELS_ON               1.608740
+TAXI_IN                 1.608740
+ARRIVAL_TIME            1.608740
+WHEELS_OFF              1.547605
+TAXI_OUT                1.547605
+DEPARTURE_TIME          1.499522
+dtype: float64
+
+--- VALORES DUPLICADOS ---
+Airlines duplicadas: 0
+Airports duplicados: 0
+Flights duplicados: 0
+
+--- VALIDAÇÃO DE RELACIONAMENTOS ---
+Airlines em flights: 14
+Airlines em master: 14
+Airlines sem cadastro: set()
+
+Aeroportos em flights (origem + destino): 627
+Aeroportos em master: 322
+Aeroportos sem cadastro: 305
+
+================================================================================
+4. ESTATÍSTICAS DESCRITIVAS
+================================================================================
+
+--- VARIÁVEIS NUMÉRICAS ---
+           YEAR          MONTH  ...  LATE_AIRCRAFT_DELAY  WEATHER_DELAY
+count  582319.0  582319.000000  ...        106129.000000  106129.000000
+mean     2015.0       6.526759  ...            23.618200       2.909667
+std         0.0       3.404500  ...            43.712791      19.948692
+min      2015.0       1.000000  ...             0.000000       0.000000
+25%      2015.0       4.000000  ...             0.000000       0.000000
+50%      2015.0       7.000000  ...             3.000000       0.000000
+75%      2015.0       9.000000  ...            29.000000       0.000000
+max      2015.0      12.000000  ...          1164.000000     924.000000
+
+[8 rows x 26 columns]
+
+--- VARIÁVEIS CATEGÓRICAS ---
+
+Top 10 Companhias Aéreas:
+AIRLINE
+WN    126719
+DL     87400
+AA     72838
+OO     58847
+EV     57314
+UA     51506
+MQ     29307
+B6     26684
+US     19960
+AS     17164
+Name: count, dtype: int64
+
+Top 10 Aeroportos de Origem:
+ORIGIN_AIRPORT
+ATL    34953
+ORD    28529
+DFW    23822
+DEN    19690
+LAX    19541
+SFO    14718
+PHX    14705
+IAH    14582
+LAS    13249
+SEA    11234
+Name: count, dtype: int64
+
+Top 10 Aeroportos de Destino:
+DESTINATION_AIRPORT
+ATL    34662
+ORD    28506
+DFW    23886
+DEN    19724
+LAX    19490
+IAH    14859
+PHX    14852
+SFO    14680
+LAS    13390
+SEA    11181
+Name: count, dtype: int64
+
+Distribuição por Mês:
+MONTH
+1     47153
+2     42634
+3     50377
+4     48529
+5     49760
+6     50407
+7     52175
+8     51202
+9     46736
+10    48643
+11    46585
+12    48118
+Name: count, dtype: int64
+
+Distribuição por Dia da Semana:
+DAY_OF_WEEK
+1    86953
+2    84590
+3    85700
+4    86946
+5    86042
+6    70222
+7    81866
+Name: count, dtype: int64
+
+================================================================================
+5. CRIAÇÃO DE FEATURES DERIVADAS
+================================================================================
+✓ Features criadas:
+  - IS_DELAYED: Voo atrasado (0/1)
+  - DELAY_CATEGORY: Categoria de atraso
+  - DEPARTURE_PERIOD: Período do dia
+
+Distribuição de voos atrasados:
+IS_DELAYED
+0    374245
+1    208074
+Name: count, dtype: int64
+
+Taxa de atrasos: 35.73%
+
+================================================================================
+6. GERANDO VISUALIZAÇÕES
+================================================================================
+✓ Salvo: 01_distribuicao_atrasos.png
+✓ Salvo: 02_analise_temporal.png
+✓ Salvo: 03_analise_companhias.png
+✓ Salvo: 04_analise_aeroportos.png
+✓ Salvo: 05_correlacao.png
+✓ Salvo: 06_distancia_vs_atraso.png
+✓ Salvo: 07_cancelamentos.png
+
+================================================================================
+7. PRINCIPAIS INSIGHTS
+================================================================================
+
+--- INSIGHTS GERAIS ---
+✓ Total de voos na amostra: 582,319
+✓ Taxa de atraso: 35.73%
+✓ Atraso médio (quando há atraso): 33.16 min
+✓ Taxa de cancelamento: 1.56%
+✓ Taxa de desvio: 0.28%
+
+--- PADRÕES TEMPORAIS ---
+✓ Mês com mais atrasos: 6 (média de 9.81 min)
+✓ Dia da semana com mais atrasos: 1 (média de 6.07 min)
+✓ Período com mais atrasos: Evening (média de 9.75 min)
+
+--- COMPANHIAS AÉREAS ---
+✓ Companhia com mais atrasos: NK (14.20 min)
+✓ Companhia com mais voos: WN (126,719 voos)
+
+--- AEROPORTOS ---
+✓ Aeroporto origem com mais atrasos: STC (47.56 min)
+✓ Aeroporto destino com mais atrasos: PPG (64.90 min)
+
+--- CORRELAÇÕES ---
+✓ Correlação DEPARTURE_DELAY x ARRIVAL_DELAY: 0.944
+✓ Correlação DISTANCE x ARRIVAL_DELAY: -0.024
+
+================================================================================
+8. SALVANDO DADOS PROCESSADOS
+================================================================================
+✓ Salvo: flights_sample_processed.csv (582,319 registros)
+✓ Salvo: eda_summary.json
+
+================================================================================
+ANÁLISE EXPLORATÓRIA CONCLUÍDA!
+================================================================================
+
+Visualizações salvas em: docs/eda_plots
+Dados processados em: data/processed
+
+✓ Próximos passos:
+  1. Revisar visualizações e insights
+  2. Feature engineering avançado
+  3. Modelagem supervisionada (classificação/regressão)
+  4. Modelagem não supervisionada (clustering)
