@@ -35,12 +35,13 @@ Gerar um plano e implementar uma nova aba "Machine Learning" no dashboard existe
   - **Método do Cotovelo (K-Means):** Gráfico de linha mostrando a inércia por número de clusters.
   - **Variância do PCA:** Gráfico de barras (variância explicada) e linha (acumulada).
   - **Perfil dos Clusters:** Gráfico de radar (Radar Chart) ou barras empilhadas informando o comportamento estatístico de cada grupo.
-  - **Distribuição (PCA Scatter):** Gráfico de dispersão (Scatter Plot) das rotas em 2D.
+  - **Distribuição (PCA Scatter):** Gráfico de dispersão (Scatter Plot) das rotas em 2D. (Atenção ao carregamento de `cluster_id` para mapear as cores corretamente).
 
 ### 4. Validação e Testes Locais
 - [ ] Subir o servidor de teste (ex: `npx serve .`) e abrir o dashboard.
 - [ ] Validar a navegação para a aba de Machine Learning.
 - [ ] Assegurar que os gráficos são renderizados adequadamente (Chart.js) e exibem *tooltips* com os dados corretos.
+- [ ] **Validação PCA (Bug Fix):** Verificar que a plotagem de Distribuição de Rotas mostra todos os clusters na cor certa (front-end deve ler `data.cluster_id`).
 - [ ] Verificar a responsividade e o layout das visualizações nos diferentes tamanhos de tela.
 
 ---

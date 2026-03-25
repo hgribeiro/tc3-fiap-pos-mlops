@@ -1042,7 +1042,7 @@ async function renderPcaScatter() {
     // data.PC1, data.PC2, data.cluster
     // We group points by cluster
     const clusterMap = {};
-    const clusterLabels = data.cluster || new Array(data.PC1.length).fill(0); // fallback
+    const clusterLabels = data.cluster_id || data.cluster || new Array(data.PC1.length).fill(0); // fallback
     
     for (let i = 0; i < data.PC1.length; i++) {
         const cId = clusterLabels[i];
