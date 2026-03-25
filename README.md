@@ -36,7 +36,12 @@ Este projeto aplica técnicas de **Machine Learning supervisionado e não superv
 ├── notebooks/
 │   └── 01_eda.ipynb          # Análise exploratória (notebook)
 ├── src/
-│   └── 01_eda.py             # Análise exploratória (script)
+│   ├── 01_eda.py                        # Análise exploratória
+│   ├── 02_feature_engineering.py        # Engenharia de features
+│   ├── 03_supervised_classification.py  # Modelagem supervisionada
+│   ├── 04_unsupervised.py               # Modelagem não supervisionada
+│   ├── 05_model_report.py               # Relatório de avaliação
+│   └── prepare_dashboard_data.py        # Consolidação de dados do dashboard
 ├── docs/
 │   ├── eda_plots/            # Visualizações geradas pelo EDA
 │   └── tc3.md                # Enunciado do Tech Challenge
@@ -84,13 +89,20 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 ```
 
-### 4. Execute os Notebooks
+### 4. Execute o Pipeline MLOps
+
+Execute os scripts python na seguinte ordem:
 
 ```bash
-jupyter notebook
+python src/01_eda.py
+python src/02_feature_engineering.py
+python src/03_supervised_classification.py
+python src/04_unsupervised.py
+python src/05_model_report.py
+python src/prepare_dashboard_data.py
 ```
 
-Navegue até a pasta `notebooks/` e execute os notebooks na ordem numérica.
+*(Opcional)* Você também pode explorar a análise gravada usando `jupyter notebook` na pasta `notebooks/`.
 
 ### 5. Execute o Dashboard
 
@@ -115,23 +127,17 @@ Feito isso, abra o navegador e acesse: [http://localhost:3847/dashboard/](http:/
 ### 2. **Modelagem Supervisionada**
 
 **Classificação**: Prever se um voo atrasará (binário)
-- Algoritmos testados: Logistic Regression, Random Forest, XGBoost, LightGBM
+- Algoritmos testados: Logistic Regression, Random Forest, Gradient Boosting
 - Métricas: Accuracy, Precision, Recall, F1-Score, AUC-ROC
-
-**Regressão** (opcional): Prever tempo de atraso (minutos)
-- Algoritmos testados: Linear Regression, Ridge, Random Forest, XGBoost
-- Métricas: MAE, RMSE, R²
 
 ### 3. **Modelagem Não Supervisionada**
 
 **Clusterização**:
 - K-Means para agrupamento de aeroportos/rotas
-- DBSCAN para detecção de padrões atípicos
 - Análise de perfis de companhias aéreas
 
 **Redução de Dimensionalidade**:
 - PCA para visualização de alta dimensionalidade
-- t-SNE para análise de clusters
 
 ### 4. **Interpretação e Conclusões**
 - Feature importance
